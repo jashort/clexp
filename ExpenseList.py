@@ -80,10 +80,9 @@ class ExpenseList():
         @param category: string (optional, not case sensitive)
         @return: float
         """
-        total = 0.0
+
         expenses = self.get_expenses(year, month, category)
-        for expense in expenses:
-            total += expense.amount
+        total = sum(expense.amount for expense in expenses)
         return round(total, 2)
 
     def get_average_per_day(self, year, month, category=None):
