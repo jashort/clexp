@@ -3,6 +3,9 @@
 # data file
 *.csv
 
+# PyCharm files
+.idea/*
+
 # C extensions
 *.so
 
