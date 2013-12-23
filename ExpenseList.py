@@ -34,13 +34,12 @@ class ExpenseList():
 
     def get_expenses(self, year=None, month=None, category=None):
         """
-        Returns a list of expense objects matching the given criteria
+        Returns a iterable matching the given criteria
         @param year: Year (optional)
         @param month: Month (1 - 12, Optional)
         @param category: string (Optional, not case sensitive)
-        @return: list of expense objects
+        @return: geneator
         """
-        output = []
         if category is not None:
             category = category.title()
 
@@ -49,26 +48,24 @@ class ExpenseList():
         elif year in self.expenses.keys():
             years = [year]
         else:
-            return []
+            raise StopIteration
 
         for y in years:
             for m in self.expenses[y].keys():
                 if month is None:
                     for expense in self.expenses[y][m]:
                         if category is None:
-                            output.append(expense)
+                            yield (expense)
                         else:
                             if expense.category == category:
-                                output.append(expense)
+                                yield (expense)
                 elif m == month:
                     for expense in self.expenses[y][m]:
                         if category is None:
-                            output.append(expense)
+                            yield (expense)
                         else:
                             if expense.category == category:
-                                output.append(expense)
-
-        return output
+                                yield (expense)
 
     def get_total(self, year=None, month=None, category=None):
         """

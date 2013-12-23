@@ -25,11 +25,11 @@ class TestExpenseList(TestCase):
         self.assertEqual(len(e.expenses), 1)
 
     def test_get_expenses(self):
-        results = self.el.get_expenses(2013, 12)
+        results = list(self.el.get_expenses(2013, 12))
         self.assertEqual(len(results), 2)
-        results = self.el.get_expenses(2013)
+        results = list(self.el.get_expenses(2013))
         self.assertEqual(len(results), 4)
-        results = self.el.get_expenses(2013, 11, "Fun")
+        results = list(self.el.get_expenses(2013, 11, "Fun"))
         self.assertEqual(len(results), 1)
 
     def test_get_total(self):
