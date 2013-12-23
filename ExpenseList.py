@@ -58,7 +58,7 @@ class ExpenseList():
                         if category is None:
                             output.append(expense)
                         else:
-                            if expense.category.lower() == category:
+                            if expense.category == category:
                                 output.append(expense)
                 elif m == month:
                     for expense in self.expenses[y][m]:
