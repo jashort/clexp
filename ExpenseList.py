@@ -38,7 +38,7 @@ class ExpenseList():
         @param year: Year (optional)
         @param month: Month (1 - 12, Optional)
         @param category: string (Optional, not case sensitive)
-        @return: geneator
+        @return: iterator
         """
         if category is not None:
             category = category.title()
