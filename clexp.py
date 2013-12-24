@@ -2,58 +2,25 @@
 import datetime
 import sys
 import os
+import argparse
 
 from ExpenseList import ExpenseList
 from Expense import Expense
 
 
-# Where to store data
-DATA_FILE = './data.csv'
-
-commands = {}
-expenses = ExpenseList()
-
-
-def print_help(args=None):
-    if not args: args = []
-    print("clexp.py")
-    print("Usage: ")
-    print("   clexp.py <command>")
-    print("   clexp.py add <amount> <category> <description> [date]")
-    print("             Add the given item to the data file. If date is not passed, ")
-    print("             assumes today")
-    print("   clexp.py summary")
-    print("            Show a summary of expenses in recent months")
-    print("   clexp.py list [year] [month] [category]")
-    print("            Show all items for the given year, month, and category")
-    #    print("   exp show year")
-    print("   clexp.py total [year] [month] [category]")
-    print("            Show total for the given year, month, and category")
-    print(" ")
-
-
-def add(args, filename=None):
+def add_expense(args):
     """
     Add expense to the data file
+    @param args: Command Line Arguments
     """
-    if filename is None:
-        filename = DATA_FILE
-    e = None
-    if len(args) < 3 or len(args) > 4:
-        print("Error - add requires 3 or 4 parameters:")
-        print("    exp add amount category description [date]")
-        return False
-    elif len(args) == 3:
-        e = Expense(args[0], args[1], args[2])
-    elif len(args) == 4:
-        e = Expense(args[0], args[1], args[2], args[3])
+    e = Expense(args.amount, args.category, args.description, args.date)
 
-    # Also add a header row if the file doesn't exist
+    # Also add_expense a header row if the file doesn't exist
     header = None
-    if not os.path.isfile(filename):
+    if not os.path.isfile(args.file):
         header = "Date\tCategory\tDescription\tAmount\n"
 
-    with open(filename, 'a') as f:
+    with open(args.file, 'a') as f:
         if header is not None:
             f.write(header)
         f.write(str(e))
@@ -63,52 +30,39 @@ def add(args, filename=None):
     return True
 
 
-def total(args):
+def total_expenses(args):
     """
-    Print the total amount spent in the given time period
+    Print the total_expenses amount spent in the given time period
     """
-    if len(args) > 0:
-        year = int(args[0])
+    expenses = load_data(args.file)
+    if args.year is not None and args.month is not None and args.category is not None:
+        print "Total spent in {}/{} on {}: ${:8,.2f}".format(args.month, args.year, args.category,
+                                                             expenses.get_total(args.year,
+                                                                                args.month,
+                                                                                args.category))
+    elif args.year is not None and args.month is not None:
+        print "Total spent in {}/{}: ${:8,.2f}".format(args.month,
+                                                       args.year,
+                                                       expenses.get_total(args.year,
+                                                                          args.month,
+                                                                          args.category))
+    elif args.year is not None:
+        print "Total spent in {}: ${:8,.2f}".format(args.year,
+                                                    expenses.get_total(args.year,
+                                                                       args.month,
+                                                                       args.category))
     else:
-        year = None
-    if len(args) > 1:
-        month = int(args[1])
-    else:
-        month = None
-    if len(args) > 2:
-        category = str(args[2])
-    else:
-        category = None
-    load_data()
-    if year is not None and month is not None and category is not None:
-        print "Total spent in {}/{} on {}: ${:8,.2f}".format(month, year, category,
-                                                             expenses.get_total(year, month, category))
-    elif year is not None and month is not None:
-        print "Total spent in {}/{}: ${:8,.2f}".format(month, year, expenses.get_total(year, month, category))
-    elif year is not None:
-        print "Total spent in {}: ${:8,.2f}".format(year, expenses.get_total(year, month, category))
-    else:
-        print "Total spent: ${:8,.2f}".format(expenses.get_total(year, month, category))
+        print "Total spent: ${:8,.2f}".format(expenses.get_total(args.year,
+                                                                 args.month,
+                                                                 args.category))
 
 
-def show(args):
+def list_expenses(args):
     """
     Print all expenses in the given time period
     """
-    if len(args) > 0:
-        year = int(args[0])
-    else:
-        year = None
-    if len(args) > 1:
-        month = int(args[1])
-    else:
-        month = None
-    if len(args) > 2:
-        category = str(args[2])
-    else:
-        category = None
-    load_data()
-    items = list(expenses.get_expenses(year, month, category))
+    expenses = load_data(args.file)
+    items = list(expenses.get_expenses(args.year, args.month, args.category))
     items.sort(key=lambda expense: expense.date)
     for item in items:
         print item
@@ -118,7 +72,7 @@ def summary(args):
     """
     Print a summary of the current month
     """
-    load_data()
+    expenses = load_data(args.file)
     today = datetime.datetime.now()
     last_month = today.replace(day=1) - datetime.timedelta(days=1)
     last_year = today.replace(day=1) - datetime.timedelta(days=365)
@@ -136,12 +90,12 @@ def summary(args):
     return True
 
 
-def load_data(filename=None):
+def load_data(filename):
     """
-    Load data from the given filename, default to the one defined in DATA_FILE
+    Load data from the given filename, returns ExpenseList object
     """
-    if filename is None:
-        filename = DATA_FILE
+    expenses = ExpenseList()
+
     with open(filename) as f:
         f.readline()    # skip header row
         for line in f:
@@ -150,38 +104,49 @@ def load_data(filename=None):
                 # Note - file is stored date, category, description, amount
                 # but add_expense is expecting amount first and date last
                 # (because date is optional)
-                tmp = line[3]
-                line[3] = line[0]
-                line[0] = tmp
+                line[0], line[3] = line[3], line[0]
                 expenses.add_expense(line)
+    return expenses
 
 
 def main():
     """
     Parse command line arguments for command and run the appropriate function
     """
-    if len(sys.argv) == 1:
-        print_help()
-        return 1
-    command = commands.get(sys.argv[1])
-    if command is None:
-        print_help()
-        return 1
-    if not command(sys.argv[2:]):
-        return 1
+
+    parser = argparse.ArgumentParser(description='Track expenses from the command line')
+    parser.add_argument("-f", "--file", help="Data File", default="./data.csv")
+    subparsers = parser.add_subparsers(help='')
+    # Parser for add_expense command
+    a_add = subparsers.add_parser('add', help='Add Expense')
+    a_add.add_argument('amount', type=str, help='Dollar amount')
+    a_add.add_argument('category', type=str, help='Category')
+    a_add.add_argument('description', type=str, help='Description')
+    a_add.add_argument('date', nargs='?', type=str, default=None,
+                       help="Date in MM/DD/YYYY format (default: today's date)")
+    a_add.set_defaults(func=add_expense)
+    # Parser for list command
+    a_list = subparsers.add_parser('list', help='List Expenses')
+    a_list.add_argument('year', type=int, default=None, nargs='?', help="Year (optional)")
+    a_list.add_argument('month', type=int, default=None, nargs='?', help="Month (optional)")
+    a_list.add_argument('category', default=None, nargs='?', help='Category (optional)')
+    a_list.set_defaults(func=list_expenses)
+    # Parser for total_expenses command
+    a_total = subparsers.add_parser('total', help='Show total amount of matching expenses')
+    a_total.add_argument('year', type=int, default=None, nargs='?', help="Year (optional)")
+    a_total.add_argument('month', type=int, default=None, nargs='?', help="Month (1 - 12, optional)")
+    a_total.add_argument('category', type=str, default=None, nargs='?', help='Category (optional)')
+    a_total.set_defaults(func=total_expenses)
+    a_summary = subparsers.add_parser('summary', help='Show summary of current and previous months')
+    a_summary.set_defaults(func=summary)
+
+    args = parser.parse_args()
+    args.func(args)
+    #print args
+
+
     return 0
 
-# Map command line arguments to functions.
-commands["-h"] = print_help
-commands["-?"] = print_help
-commands["--help"] = print_help
-commands["help"] = print_help
-commands["add"] = add
-commands["summary"] = summary
-commands["sum"] = summary
-commands["total"] = total
-commands["show"] = show
-commands["list"] = show
 
 if __name__ == "__main__":
     sys.exit(main())
