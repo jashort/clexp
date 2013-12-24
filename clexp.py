@@ -108,7 +108,7 @@ def show(args):
     else:
         category = None
     load_data()
-    items = expenses.get_expenses(year, month, category)
+    items = list(expenses.get_expenses(year, month, category))
     items.sort(key=lambda expense: expense.date)
     for item in items:
         print item
