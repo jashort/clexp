@@ -11,7 +11,7 @@ via another service ([Spideroak](http://www.spideroak.com/),
 
 Usage:
 -------------
-    clexp.py <command> [arguments]
+    clexp.py [-f filename] <command> [arguments]
 
 Examples:
     clexp.py add 8.95 food Lunch
@@ -34,4 +34,5 @@ and the date 12/20/2013)
 
 Settings:
 -------------
-Data is stored in the file defined by the DATA_FILE variable in clexp.py
+Data is read from/saved to the file specified by the -f parameter, or defaults
+to data.csv in the current directory.
