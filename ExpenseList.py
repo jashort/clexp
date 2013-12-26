@@ -116,3 +116,16 @@ class ExpenseList():
             return self.expenses[year].keys()
         else:
             return []
+
+    def get_month_totals(self):
+        """
+        Get the total amount spent for each month, returns a list of tuples:
+        (datetime, amount)
+        """
+        output = []
+        for year in self.get_years():
+            for month in self.get_months(year):
+                output.append((datetime.datetime(year, month, 1), self.get_total(year, month)))
+
+        return output
+

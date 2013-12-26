@@ -47,3 +47,10 @@ class TestExpenseList(TestCase):
 
     def test_get_months(self):
         self.assertEqual(self.el.get_months(2013), [11, 12])
+
+    def test_get_month_totals(self):
+        totals = self.el.get_month_totals()
+        self.assertEqual(totals[0][0], datetime.datetime(2013,11,1))
+        self.assertEqual(totals[0][1], 44.98)
+        self.assertEqual(totals[1][0], datetime.datetime(2013,12,1))
+        self.assertEqual(totals[1][1], 55.43)
