@@ -14,6 +14,7 @@ Usage:
     clexp.py [-f filename] <command> [arguments]
 
 Examples:
+
     clexp.py add 8.95 food Lunch
 (adds an expense for $8.95 to the Food category, with the description "Lunch"
 and today's date)
