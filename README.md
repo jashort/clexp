@@ -31,6 +31,8 @@ and the date 12/20/2013)
     clexp.py total 2013 12
 (shows the total amount spent in December 2013)
 
+    clexp.py totals
+(shows the total amount spent by month)
 
 Settings:
 -------------
