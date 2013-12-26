@@ -35,6 +35,10 @@ and the date 12/20/2013)
     clexp.py totals
 (shows the total amount spent by month)
 
+    clexp.py categories
+(shows categories currently found in the data file)
+
+
 Settings:
 -------------
 Data is read from/saved to the file specified by the -f parameter, or defaults

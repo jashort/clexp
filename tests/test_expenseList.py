@@ -54,3 +54,7 @@ class TestExpenseList(TestCase):
         self.assertEqual(totals[0][1], 44.98)
         self.assertEqual(totals[1][0], datetime.datetime(2013,12,1))
         self.assertEqual(totals[1][1], 55.43)
+
+    def test_categories(self):
+        categories = self.el.categories
+        self.assertEqual(len(categories), 3)
