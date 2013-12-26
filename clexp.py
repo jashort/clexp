@@ -68,6 +68,17 @@ def list_expenses(args):
         print item
 
 
+def list_totals(args):
+    """
+    Print the total from every month
+    """
+    expenses = load_data(args.file)
+    totals = expenses.get_month_totals()
+    print("Total Spent:")
+    for month, amount in totals:
+        print "  {}: ${:8,.2f}".format(month.strftime("%m/%Y"), amount)
+
+
 def summary(args):
     """
     Print a summary of the current month
@@ -139,6 +150,8 @@ def main():
     a_total.set_defaults(func=total_expenses)
     a_summary = subparsers.add_parser('summary', help='Show summary of current and previous months')
     a_summary.set_defaults(func=summary)
+    a_list_totals = subparsers.add_parser('totals', help='List monthly totals')
+    a_list_totals.set_defaults(func=list_totals)
 
     args = parser.parse_args()
     args.func(args)
