@@ -63,8 +63,7 @@ def list_expenses(args):
     """
     expenses = load_data(args.file)
     items = list(expenses.get_expenses(args.year, args.month, args.category))
-    items.sort(key=lambda expense: expense.date)
-    for item in items:
+    for item in sorted(items, key=lambda expense: expense.date):
         print item
 
 
@@ -88,6 +87,7 @@ def list_categories(args):
     for category in sorted(expenses.categories):
         print "  {}".format(category)
 
+
 def summary(args):
     """
     Print a summary of the current month
@@ -99,12 +99,12 @@ def summary(args):
     print "Total spent:"
     print "             This month: ${:8,.2f}".format(expenses.get_total(today.year, today.month))
     print "             Last month: ${:8,.2f}".format(expenses.get_total(last_month.year, last_month.month))
-    print "   This month last year: ${:8,.2f}".format(expenses.get_total(last_year.year, last_month.month))
+    print "   This month last year: ${:8,.2f}".format(expenses.get_total(last_year.year, last_year.month))
     print " "
     print "Average spent per day: "
     print "             This month: ${:8,.2f}".format(expenses.get_average_per_day(today.year, today.month))
     print "             Last month: ${:8,.2f}".format(expenses.get_average_per_day(last_month.year, last_month.month))
-    print "   This month last year: ${:8,.2f}".format(expenses.get_average_per_day(last_year.year, last_month.month))
+    print "   This month last year: ${:8,.2f}".format(expenses.get_average_per_day(last_year.year, last_year.month))
     print " "
 
     return True
