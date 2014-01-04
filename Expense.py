@@ -7,10 +7,6 @@ class Expense():
     """
     Represents a single expense
     """
-    date = None
-    category = None
-    description = None
-    amount = None
 
     def __init__(self, amount, category, description, date=None):
         """
