@@ -25,8 +25,8 @@ def add_expense(args):
             f.write(header)
         f.write(str(e))
         f.write("\n")
-    print ("Added:")
-    print str(e)
+    print("Added:")
+    print(str(e))
     return True
 
 
@@ -36,25 +36,25 @@ def total_expenses(args):
     """
     expenses = load_data(args.file)
     if args.year is not None and args.month is not None and args.category is not None:
-        print "Total spent in {}/{} on {}: ${:8,.2f}".format(args.month, args.year, args.category,
+        print("Total spent in {}/{} on {}: ${:8,.2f}".format(args.month, args.year, args.category,
                                                              expenses.get_total(args.year,
                                                                                 args.month,
-                                                                                args.category))
+                                                                                args.category)))
     elif args.year is not None and args.month is not None:
-        print "Total spent in {}/{}: ${:8,.2f}".format(args.month,
+        print("Total spent in {}/{}: ${:8,.2f}".format(args.month,
                                                        args.year,
                                                        expenses.get_total(args.year,
                                                                           args.month,
-                                                                          args.category))
+                                                                          args.category)))
     elif args.year is not None:
-        print "Total spent in {}: ${:8,.2f}".format(args.year,
+        print("Total spent in {}: ${:8,.2f}".format(args.year,
                                                     expenses.get_total(args.year,
                                                                        args.month,
-                                                                       args.category))
+                                                                       args.category)))
     else:
-        print "Total spent: ${:8,.2f}".format(expenses.get_total(args.year,
+        print("Total spent: ${:8,.2f}".format(expenses.get_total(args.year,
                                                                  args.month,
-                                                                 args.category))
+                                                                 args.category)))
 
 
 def list_expenses(args):
@@ -64,7 +64,7 @@ def list_expenses(args):
     expenses = load_data(args.file)
     items = list(expenses.get_expenses(args.year, args.month, args.category))
     for item in sorted(items, key=lambda expense: expense.date):
-        print item
+        print(item)
 
 
 def list_totals(args):
@@ -75,7 +75,7 @@ def list_totals(args):
     totals = expenses.get_month_totals()
     print("Total Spent:")
     for month, amount in totals:
-        print "  {}: ${:8,.2f}".format(month.strftime("%m/%Y"), amount)
+        print("  {}: ${:8,.2f}".format(month.strftime("%m/%Y"), amount))
 
 
 def list_categories(args):
@@ -83,9 +83,9 @@ def list_categories(args):
     Print all the currently used categories
     """
     expenses = load_data(args.file)
-    print 'Categories:'
+    print('Categories:')
     for category in sorted(expenses.categories):
-        print "  {}".format(category)
+        print("  {}".format(category))
 
 
 def summary(args):
@@ -96,16 +96,16 @@ def summary(args):
     today = datetime.datetime.now()
     last_month = today.replace(day=1) - datetime.timedelta(days=1)
     last_year = today.replace(day=1) - datetime.timedelta(days=365)
-    print "Total spent:"
-    print "             This month: ${:8,.2f}".format(expenses.get_total(today.year, today.month))
-    print "             Last month: ${:8,.2f}".format(expenses.get_total(last_month.year, last_month.month))
-    print "   This month last year: ${:8,.2f}".format(expenses.get_total(last_year.year, last_year.month))
-    print " "
-    print "Average spent per day: "
-    print "             This month: ${:8,.2f}".format(expenses.get_average_per_day(today.year, today.month))
-    print "             Last month: ${:8,.2f}".format(expenses.get_average_per_day(last_month.year, last_month.month))
-    print "   This month last year: ${:8,.2f}".format(expenses.get_average_per_day(last_year.year, last_year.month))
-    print " "
+    print("Total spent:")
+    print("             This month: ${:8,.2f}".format(expenses.get_total(today.year, today.month)))
+    print("             Last month: ${:8,.2f}".format(expenses.get_total(last_month.year, last_month.month)))
+    print("   This month last year: ${:8,.2f}".format(expenses.get_total(last_year.year, last_year.month)))
+    print(" ")
+    print("Average spent per day: ")
+    print("             This month: ${:8,.2f}".format(expenses.get_average_per_day(today.year, today.month)))
+    print("             Last month: ${:8,.2f}".format(expenses.get_average_per_day(last_month.year, last_month.month)))
+    print("   This month last year: ${:8,.2f}".format(expenses.get_average_per_day(last_year.year, last_year.month)))
+    print(" ")
 
     return True
 
@@ -164,12 +164,8 @@ def main():
     a_categories = subparsers.add_parser('categories', help='Show all categories currently used')
     a_categories.set_defaults(func=list_categories)
 
-
     args = parser.parse_args()
     args.func(args)
-    #print args
-
-
     return 0
 
 
