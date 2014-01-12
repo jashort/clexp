@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import datetime
 import string
+import decimal
 
 
 class Expense():
@@ -11,12 +12,12 @@ class Expense():
     def __init__(self, amount, category, description, date=None):
         """
         Creates new Expense object
-        @param amount: Amount, can be a string ("$12.34") or a float (12.34)
+        @param amount: Amount, can be a string (with or without) dollar sign ("$12.34") or a float (12.34)
         @param category: String, will be "Title Cased"
         @param description: String
         @param date: Date in MM/DD/YYYY format (optional, assumes today if None)
         """
-        self.amount = float(string.replace(str(amount), "$", ""))
+        self.amount = decimal.Decimal(string.replace(str(amount), "$", ""))
         self.category = category.title()
         self.description = description
         if date is None:
