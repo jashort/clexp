@@ -38,6 +38,9 @@ and the date 12/20/2013)
     clexp.py categories
 (shows categories currently found in the data file)
 
+    clexp.py plot
+(plots total amount spent by month using matplotlib)
+
 
 Settings:
 -------------

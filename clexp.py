@@ -4,6 +4,7 @@ import sys
 import os
 import argparse
 
+
 from ExpenseList import ExpenseList
 from Expense import Expense
 
@@ -110,6 +111,39 @@ def summary(args):
     return True
 
 
+def plot(args):
+    """
+    Plot totals with MatPlotLib
+    """
+    try:
+        import matplotlib.pyplot
+        import matplotlib.dates
+    except ImportError:
+        print('Error importing matplotlib')
+        exit(1)
+    # Load data
+    expenses = load_data(args.file)
+    data = expenses.get_month_totals()
+    dates = [q[0] for q in data]
+    totals = [q[1] for q in data]
+    my_plot = matplotlib.pyplot
+    my_plot.title('Money Spent')
+    my_plot.ylabel('Amount')
+    my_plot.xlabel('Month')
+    my_plot.gca().xaxis.set_major_formatter(matplotlib.dates.DateFormatter('%b %Y'))
+    my_plot.gca().xaxis.set_major_locator(matplotlib.dates.MonthLocator())
+    my_plot.gca().grid(False, 'major')
+    my_plot.gca().grid(True, 'minor')
+    my_plot.gca().grid(True)
+
+    my_plot.plot(dates, totals, label='Total', linewidth=3)
+    my_plot.gcf().autofmt_xdate()
+    my_plot.xticks(rotation=45)
+    my_plot.fill_between(dates, totals, [0]*len(data), facecolor='blue', alpha=0.2)
+    my_plot.show()
+
+
+
 def load_data(filename):
     """
     Load data from the given filename, returns ExpenseList object
@@ -163,6 +197,8 @@ def main():
     a_list_totals.set_defaults(func=list_totals)
     a_categories = subparsers.add_parser('categories', help='Show all categories currently used')
     a_categories.set_defaults(func=list_categories)
+    a_plot = subparsers.add_parser('plot', help='Plot totals with MathPlotLib')
+    a_plot.set_defaults(func=plot)
 
     args = parser.parse_args()
     args.func(args)
