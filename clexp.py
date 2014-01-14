@@ -131,8 +131,9 @@ def plot(args):
     my_plot.ylabel('Amount')
     my_plot.xlabel('Month')
     my_plot.gca().xaxis.set_major_formatter(matplotlib.dates.DateFormatter('%b %Y'))
-    my_plot.gca().xaxis.set_major_locator(matplotlib.dates.MonthLocator())
-    my_plot.gca().grid(False, 'major')
+    my_plot.gca().xaxis.set_major_locator(matplotlib.dates.MonthLocator(range(1, 13), bymonthday=1, interval=3))
+    my_plot.gca().xaxis.set_minor_locator(matplotlib.dates.MonthLocator(range(1, 13), bymonthday=1, interval=1))
+    my_plot.gca().grid(True, 'major')
     my_plot.gca().grid(True, 'minor')
     my_plot.gca().grid(True)
 
