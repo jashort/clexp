@@ -143,6 +143,29 @@ def plot(args):
     my_plot.show()
 
 
+def details(args):
+    """
+    List totals for each category for the given time period
+    """
+    expenses = load_data(args.file)
+    if args.year is not None and args.month is not None:
+        print("Amount spent in {}/{}:".format(args.month, args.year))
+        for category in expenses.categories:
+            print("\t{:20} ${:10,.2f}".format(category, expenses.get_total(args.year,
+                                                                        args.month,
+                                                                        category)))
+    elif args.year is not None:
+        print("Amount spent in {}:".format(args.year))
+        for category in expenses.categories:
+            print("\t{:20} ${:10,.2f}".format(category, expenses.get_total(args.year, category=category)))
+    else:
+        print("Amount spent:".format(args.month, args.year))
+        for category in expenses.categories:
+            print("\t{:20} ${:10,.2f}".format(category, expenses.get_total(category=category)))
+
+    print(" ")
+    print("\t{:20} ${:10,.2f}".format('Total:', expenses.get_total(args.year, args.month)))
+
 
 def load_data(filename):
     """
@@ -199,6 +222,10 @@ def main():
     a_categories.set_defaults(func=list_categories)
     a_plot = subparsers.add_parser('plot', help='Plot totals with MathPlotLib')
     a_plot.set_defaults(func=plot)
+    a_details = subparsers.add_parser('detail', help='Show totals of each category for the given time period')
+    a_details.add_argument('year', type=int, default=None, nargs='?', help="Year (optional)")
+    a_details.add_argument('month', type=int, default=None, nargs='?', help="Month (optional)")
+    a_details.set_defaults(func=details)
 
     args = parser.parse_args()
     args.func(args)
