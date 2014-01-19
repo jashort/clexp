@@ -23,6 +23,9 @@ and today's date)
 (adds an expense for $8.95 to the Food category, with the description "Lunch"
 and the date 12/20/2013)
 
+    clexp add 45.30/3 food Lunch
+(Evalate the expression "45.30/3" and add the result to the Food category with the description "Lunch")
+
     clexp total
 (shows the total amount spent in all time)
 

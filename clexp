@@ -14,7 +14,15 @@ def add_expense(args):
     Add expense to the data file
     @param args: Command Line Arguments
     """
-    e = Expense(args.amount, args.category, args.description, args.date)
+    try:
+        e = Expense(args.amount, args.category, args.description, args.date)
+    except ValueError:
+        print("Error: unable to parse input as expense.")
+        print("          Amount: {}".format(args.amount))
+        print("        Category: {}".format(args.category))
+        print("     Description: {}".format(args.description))
+        print("            Date: {}".format(args.date))
+        exit(1)
 
     # Also add_expense a header row if the file doesn't exist
     header = None
@@ -28,7 +36,6 @@ def add_expense(args):
         f.write("\n")
     print("Added:")
     print(str(e))
-    return True
 
 
 def total_expenses(args):
@@ -197,7 +204,7 @@ def main():
     subparsers = parser.add_subparsers(help='')
     # Parser for add_expense command
     a_add = subparsers.add_parser('add', help='Add Expense')
-    a_add.add_argument('amount', type=str, help='Dollar amount')
+    a_add.add_argument('amount', type=str, help='Dollar amount or formula')
     a_add.add_argument('category', type=str, help='Category')
     a_add.add_argument('description', type=str, help='Description')
     a_add.add_argument('date', nargs='?', type=str, default=None,

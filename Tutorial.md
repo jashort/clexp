@@ -47,86 +47,74 @@ Added:
 $ clexp add 749.18 rent "December rent and water bill" 12/1/2013
 Added:
 12/01/2013	Rent	December rent and water bill	$749.18
-````
-
-Summary
-----------------
-The summary command will show the amount spent in the current month and
-compare it to the previous month and year.
-
-```shell
-$ clexp summary
-Total spent:
-             This month: $1,363.27
-             Last month: $  749.18
-   This month last year: $    0.00
-
-Average spent per day:
-             This month: $   90.88
-             Last month: $   24.17
-   This month last year: $    0.00
-
 ```
 
-Detail View
+Adding Expenses - Advanced Usage
 ----------------
+Calculations can be passed in to the amount field as well. For example, if you split
+a $44 lunch bill evenly with two other people:
+```shell
+$ clexp add 44/3 Food "Lunch with Alice and Bob" 1/18/2014
+Added:
+01/18/2014	Food	Lunch with Alice and Bob	$14.67
+```
+
+Reporting
+----------------
+Several different reporting commands are available. Generally they work with the
+format:
+```shell
+clexp <command> [year] [month] [category]
+```
+Year, month and category are all optional. You can specify year, year and month, or
+year, month and category. If all three parameters are omitted, every entry in the
+data file will be used.
+
+Detail View
+================
 The detail command is used to give a total for each category:
 ```shell
 $ clexp detail
 Amount spent:
-	Food                 $     11.90
+	Food                 $     26.57
 	New Toys             $    600.00
 	Rent                 $  1,500.55
 
-	Total:               $  2,112.45
+	Total:               $  2,127.12
 ```
 
-It will optionally take the year or year and month as well:
+Or using the year to show only 2014:
 ```shell
 $ clexp detail 2014
 Amount spent in 2014:
-	Food                 $     11.90
+	Food                 $     26.57
 	New Toys             $    600.00
 	Rent                 $    751.37
 
-	Total:               $  1,363.27
+	Total:               $  1,377.94
 ```
 
 
 Totals
-----------------
-The totals command shows the amount spent for each month for all time:
+================
+The totals command shows the total amount spent each month:
 ```shell
 $ clexp totals
 Total Spent:
   12/2013: $  749.18
-  01/2014: $1,363.27
-
+  01/2014: $1,377.94
 ```
 
-
-Categories
----------------
-The categories command lists every category found in the data file. For
-example:
-```shell
-$ clexp categories
-Categories:
-  Food
-  New Toys
-  Rent
-```
-
-
-Listing Expenses
-----------------
+List
+================
 To list individual expenses, use the list command. To list expenses in a given year, use:
 
 ```shell
 $ clexp list 2014
-01/01/2014	Rent	Rent and water bill	$751.37
-01/15/2014	Food	sandwich	$5.95
-01/15/2014	New Toys	Motherboard, processor & memory	$600.00
+01/01/2014	Rent	January Rent and water bill	$751.37
+01/18/2014	Food	sandwich	$5.95
+01/18/2014	New Toys	Motherboard, processor & memory	$600.00
+01/18/2014	Food	Lunch with Alice and Bob	$14.67
 01/25/2014	Food	sandwich	$5.95
 ```
 
@@ -144,7 +132,45 @@ Finally, you can list a certain category in a month:
 
 ```shell
 $ clexp list 2014 1 food
-01/15/2014	Food	sandwich	$5.95
+01/18/2014	Food	sandwich	$5.95
+01/18/2014	Food	Lunch with Alice and Bob	$14.67
 01/25/2014	Food	sandwich	$5.95
 ```
 
+
+
+
+Other Output Commands
+----------------
+
+Summary
+================
+The summary command will show the amount spent in the current month and
+compare it to the previous month and year. It takes no arguments
+
+```shell
+$ clexp summary
+Total spent:
+             This month: $1,377.94
+             Last month: $  749.18
+   This month last year: $    0.00
+
+Average spent per day:
+             This month: $   76.55
+             Last month: $   24.17
+   This month last year: $    0.00
+```
+
+
+
+Categories
+================
+The categories command lists every category found in the data file. It takes no
+arguments. For example:
+```shell
+$ clexp categories
+Categories:
+  Food
+  New Toys
+  Rent
+```
