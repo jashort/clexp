@@ -90,12 +90,7 @@ class ExpenseList():
         @param category: string
         """
         total = self.get_total(year, month, category)
-        today = datetime.datetime.now()
-        # When running for this month, only count the partial month - from today
-        if today.year == year and today.month == month:
-            days = today.day
-        else:
-            days = calendar.monthrange(year, month)[1]
+        days = calendar.monthrange(year, month)[1]
         return round(total / days, 2)
 
     def get_years(self):
