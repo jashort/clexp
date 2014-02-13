@@ -193,6 +193,17 @@ def load_data(filename):
     return expenses
 
 
+def initialize_storage(storage_dir):
+    """
+    Create storage directory if it doesn't exist
+    """
+    if not os.path.exists(storage_dir):
+        try:
+            os.mkdir('storage_dir', 700)
+        except IOError:
+            print("Error: couldn't create storage directory {0}".format(storage_dir))
+
+
 def main():
     """
     Parse command line arguments for command and run the appropriate function
@@ -240,13 +251,11 @@ def main():
     a_details.set_defaults(func=details)
 
     args = parser.parse_args()
+    initialize_storage('~/.clexp/')
     args.func(args)
     return 0
 
 
 if __name__ == "__main__":
     sys.exit(main())
-
-
-
 
