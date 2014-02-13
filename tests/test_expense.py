@@ -1,5 +1,6 @@
 from unittest import TestCase
 import datetime
+
 from Expense import Expense
 
 
@@ -15,7 +16,7 @@ class TestExpense(TestCase):
         self.assertEqual(e.year, 2013)
         self.assertEqual(str(e), "12/01/2013	Living Expenses	Rent and utilities	$2.53")
 
-    def test_createExpense_from_decimal(self):
+    def test_create_expense_from_decimal(self):
         e = Expense(2.53, "Living Expenses", "Rent and utilities", "12/1/2013")
         self.assertEqual(float(e.amount), 2.53)
 
