@@ -8,6 +8,10 @@ from ExpenseList import ExpenseList
 from Expense import Expense
 
 
+# Default settings
+STORAGE_DIRECTORY = os.environ['HOME'] + '/.clexp/'
+STORAGE_FILE = 'data.csv'
+
 def add_expense(args):
     """
     Add expense to the data file
@@ -197,16 +201,16 @@ def load_data(filename):
         sys.exit(1)
 
 
-def initialize_storage(storage_dir):
+def initialize_storage(args):
     """
     Create storage directory if it doesn't exist
     """
-    if not os.path.exists(storage_dir):
-#        try:
-            os.mkdir(storage_dir, 700)
-#        except OSError:
-#            print("Error: couldn't create storage directory {0}".format(storage_dir))
-
+    path, filename = os.path.split(args.file)
+    if not os.path.isdir(path):
+        try:
+            os.mkdir(path, 0700)
+        except OSError:
+            print("Error: couldn't create storage directory {0}".format(path))
 
 
 def main():
@@ -215,7 +219,7 @@ def main():
     """
     parser = argparse.ArgumentParser(description='Track expenses from the command line')
     # Parser for file argument
-    parser.add_argument("-f", "--file", help="Data File", default="~/.clexp/data.csv")
+    parser.add_argument("-f", "--file", help="Data File", default=STORAGE_DIRECTORY + STORAGE_FILE)
     subparsers = parser.add_subparsers(help='')
     # Parser for add command
     a_add = subparsers.add_parser('add', help='Add Expense')
@@ -256,7 +260,7 @@ def main():
     a_details.set_defaults(func=details)
 
     args = parser.parse_args()
-    initialize_storage('~/.clexp')
+    initialize_storage(args)
     args.func(args)
     return 0
 
