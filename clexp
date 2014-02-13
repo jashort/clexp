@@ -8,6 +8,7 @@ from ExpenseList import ExpenseList
 from Expense import Expense
 
 
+
 # Default settings
 STORAGE_DIRECTORY = os.environ['HOME'] + '/.clexp/'
 STORAGE_FILE = 'data.csv'
@@ -206,7 +207,7 @@ def initialize_storage(args):
     Create storage directory if it doesn't exist
     """
     path, filename = os.path.split(args.file)
-    if not os.path.isdir(path):
+    if not os.path.isdir(path) and path != '':
         try:
             os.mkdir(path, 0700)
         except OSError:
