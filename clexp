@@ -9,14 +9,17 @@ from Expense import Expense
 
 
 
+
 # Default settings
 STORAGE_DIRECTORY = os.environ['HOME'] + '/.clexp/'
 STORAGE_FILE = 'data.csv'
 
+
 def add_expense(args):
     """
     Add expense to the data file
-    @param args: Command Line Arguments
+    @param args: Command line arguments
+    @type args: argparse arguments object
     """
     try:
         e = Expense(args.amount, args.category, args.description, args.date)
@@ -28,7 +31,7 @@ def add_expense(args):
         print("            Date: {}".format(args.date))
         exit(1)
 
-    # Also add_expense a header row if the file doesn't exist
+    # Also add a header row if the file doesn't exist
     header = None
     if not os.path.isfile(args.file):
         header = "Date\tCategory\tDescription\tAmount\n"
@@ -45,6 +48,8 @@ def add_expense(args):
 def total_expenses(args):
     """
     Print the total_expenses amount spent in the given time period
+    @param args: Command line arguments
+    @type args: argparse arguments object
     """
     expenses = load_data(args.file)
     if args.year is not None and args.month is not None and args.category is not None:
@@ -72,6 +77,8 @@ def total_expenses(args):
 def list_expenses(args):
     """
     Print all expenses in the given time period
+    @param args: Command line arguments
+    @type args: argparse arguments object
     """
     expenses = load_data(args.file)
     items = list(expenses.get_expenses(args.year, args.month, args.category))
@@ -82,6 +89,8 @@ def list_expenses(args):
 def list_totals(args):
     """
     Print the total from every month
+    @param args: Command line arguments
+    @type args: argparse arguments object
     """
     expenses = load_data(args.file)
     totals = expenses.get_month_totals()
@@ -93,6 +102,8 @@ def list_totals(args):
 def list_categories(args):
     """
     Print all the currently used categories
+    @param args: Command line arguments
+    @type args: argparse arguments object
     """
     expenses = load_data(args.file)
     print('Categories:')
@@ -103,6 +114,8 @@ def list_categories(args):
 def summary(args):
     """
     Print a summary of the current month
+    @param args: Command line arguments
+    @type args: argparse arguments object
     """
     expenses = load_data(args.file)
     today = datetime.datetime.now()
@@ -125,6 +138,8 @@ def summary(args):
 def plot(args):
     """
     Plot totals with MatPlotLib
+    @param args: Command line arguments
+    @type args: argparse arguments object
     """
     try:
         import matplotlib.pyplot
@@ -158,6 +173,8 @@ def plot(args):
 def details(args):
     """
     List totals for each category for the given time period
+    @param args: Command line arguments
+    @type args: argparse arguments object
     """
     expenses = load_data(args.file)
     if args.year is not None and args.month is not None:
@@ -182,6 +199,10 @@ def details(args):
 def load_data(filename):
     """
     Load data from the given filename, returns ExpenseList object
+    @rtype : ExpenseList
+    @return : Expenses
+    @param filename: Filename of data file to open
+    @type filename: str
     """
     expenses = ExpenseList()
 
@@ -205,6 +226,8 @@ def load_data(filename):
 def initialize_storage(args):
     """
     Create storage directory if it doesn't exist
+    @param args: Command line arguments
+    @type args: argparse arguments object
     """
     path, filename = os.path.split(args.file)
     if not os.path.isdir(path) and path != '':
