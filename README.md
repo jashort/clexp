@@ -54,4 +54,4 @@ and the date 12/20/2013)
 Settings:
 -------------
 Data is read from/saved to the file specified by the -f parameter, or defaults
-to data.csv in the current directory.
+to ~/.clexp/data.csv.
