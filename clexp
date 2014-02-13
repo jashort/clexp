@@ -9,7 +9,6 @@ from Expense import Expense
 
 
 
-
 # Default settings
 STORAGE_DIRECTORY = os.environ['HOME'] + '/.clexp/'
 STORAGE_FILE = 'data.csv'
