@@ -4,7 +4,6 @@ import sys
 import os
 import argparse
 
-
 from ExpenseList import ExpenseList
 from Expense import Expense
 
@@ -198,11 +197,11 @@ def main():
     """
     Parse command line arguments for command and run the appropriate function
     """
-
     parser = argparse.ArgumentParser(description='Track expenses from the command line')
-    parser.add_argument("-f", "--file", help="Data File", default="./data.csv")
+    # Parser for file argument
+    parser.add_argument("-f", "--file", help="Data File", default="~/.clexp/data.csv")
     subparsers = parser.add_subparsers(help='')
-    # Parser for add_expense command
+    # Parser for add command
     a_add = subparsers.add_parser('add', help='Add Expense')
     a_add.add_argument('amount', type=str, help='Dollar amount or formula')
     a_add.add_argument('category', type=str, help='Category')
@@ -216,20 +215,25 @@ def main():
     a_list.add_argument('month', type=int, default=None, nargs='?', help="Month (optional)")
     a_list.add_argument('category', default=None, nargs='?', help='Category (optional)')
     a_list.set_defaults(func=list_expenses)
-    # Parser for total_expenses command
+    # Parser for expenses command
     a_total = subparsers.add_parser('total', help='Show total amount of matching expenses')
     a_total.add_argument('year', type=int, default=None, nargs='?', help="Year (optional)")
     a_total.add_argument('month', type=int, default=None, nargs='?', help="Month (1 - 12, optional)")
     a_total.add_argument('category', type=str, default=None, nargs='?', help='Category (optional)')
     a_total.set_defaults(func=total_expenses)
+    # Parser for summary command
     a_summary = subparsers.add_parser('summary', help='Show summary of current and previous months')
     a_summary.set_defaults(func=summary)
+    # Parser for totals command
     a_list_totals = subparsers.add_parser('totals', help='List monthly totals')
     a_list_totals.set_defaults(func=list_totals)
+    # Parser for categories command
     a_categories = subparsers.add_parser('categories', help='Show all categories currently used')
     a_categories.set_defaults(func=list_categories)
+    # Parser for plot command
     a_plot = subparsers.add_parser('plot', help='Plot totals with MathPlotLib')
     a_plot.set_defaults(func=plot)
+    # Parser for details command
     a_details = subparsers.add_parser('detail', help='Show totals of each category for the given time period')
     a_details.add_argument('year', type=int, default=None, nargs='?', help="Year (optional)")
     a_details.add_argument('month', type=int, default=None, nargs='?', help="Month (optional)")
