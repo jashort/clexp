@@ -180,17 +180,21 @@ def load_data(filename):
     """
     expenses = ExpenseList()
 
-    with open(filename) as f:
-        f.readline()    # skip header row
-        for line in f:
-            if line.strip() != "":
-                line = line.strip().split("\t")
-                # Note - file is stored date, category, description, amount
-                # but add_expense is expecting amount first and date last
-                # (because date is optional)
-                line[0], line[3] = line[3], line[0]
-                expenses.add_expense(line)
-    return expenses
+    try:
+        with open(filename) as f:
+            f.readline()    # skip header row
+            for line in f:
+                if line.strip() != "":
+                    line = line.strip().split("\t")
+                    # Note - file is stored date, category, description, amount
+                    # but add_expense is expecting amount first and date last
+                    # (because date is optional)
+                    line[0], line[3] = line[3], line[0]
+                    expenses.add_expense(line)
+        return expenses
+    except IOError:
+        print("Error: couldn't open data file {0}".format(filename))
+        sys.exit(1)
 
 
 def initialize_storage(storage_dir):
@@ -198,10 +202,11 @@ def initialize_storage(storage_dir):
     Create storage directory if it doesn't exist
     """
     if not os.path.exists(storage_dir):
-        try:
-            os.mkdir('storage_dir', 700)
-        except IOError:
-            print("Error: couldn't create storage directory {0}".format(storage_dir))
+#        try:
+            os.mkdir(storage_dir, 700)
+#        except OSError:
+#            print("Error: couldn't create storage directory {0}".format(storage_dir))
+
 
 
 def main():
@@ -251,7 +256,7 @@ def main():
     a_details.set_defaults(func=details)
 
     args = parser.parse_args()
-    initialize_storage('~/.clexp/')
+    initialize_storage('~/.clexp')
     args.func(args)
     return 0
 
