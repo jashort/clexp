@@ -98,7 +98,7 @@ class ExpenseList():
         Returns a list of available years
         @return: list
         """
-        return self.expenses.keys()
+        return sorted(self.expenses.keys())
 
     def get_months(self, year):
         """
@@ -108,7 +108,7 @@ class ExpenseList():
         @return: list
         """
         if year in self.expenses.keys():
-            return self.expenses[year].keys()
+            return sorted(self.expenses[year].keys())
         else:
             return []
 
