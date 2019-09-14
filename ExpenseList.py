@@ -75,12 +75,12 @@ class ExpenseList():
         @param year: Year (optional)
         @param month: Month (1 - 12) (optional)
         @param category: string (optional, not case sensitive)
-        @return: float
+        @return: float (must return float for matplotlib
         """
 
         expenses = self.get_expenses(year, month, category)
         total = sum(expense.amount for expense in expenses)
-        return round(total, 2)
+        return float(round(total, 2))
 
     def get_average_per_day(self, year, month, category=None):
         """

@@ -21,7 +21,7 @@ class TestExpenseList(TestCase):
         item = e.expenses[2013][12][0]
         self.assertEqual(item.amount, 1.75)
         self.assertEqual(item.category, "Food")
-        self.assertEqual(item.date, datetime.datetime(2013, 12, 01).date())
+        self.assertEqual(item.date, datetime.datetime(2013, 12, 1).date())
         self.assertEqual(len(e.expenses), 1)
 
     def test_get_expenses(self):
@@ -41,7 +41,6 @@ class TestExpenseList(TestCase):
     def test_get_average_per_day(self):
         self.assertEqual(self.el.get_average_per_day(2013, 11), 1.5)
 
-
     def test_get_years(self):
         self.assertEqual(self.el.get_years(), [2013])
 
@@ -50,9 +49,9 @@ class TestExpenseList(TestCase):
 
     def test_get_month_totals(self):
         totals = self.el.get_month_totals()
-        self.assertEqual(totals[0][0], datetime.datetime(2013,11,1))
+        self.assertEqual(totals[0][0], datetime.datetime(2013, 11, 1))
         self.assertEqual(totals[0][1], 44.98)
-        self.assertEqual(totals[1][0], datetime.datetime(2013,12,1))
+        self.assertEqual(totals[1][0], datetime.datetime(2013, 12, 1))
         self.assertEqual(totals[1][1], 55.43)
 
     def test_categories(self):

@@ -1,6 +1,5 @@
 #!/usr/bin/python
 import datetime
-import string
 import decimal
 import re
 
@@ -18,7 +17,7 @@ class Expense():
         @param description: String
         @param date: Date in MM/DD/YYYY format (optional, assumes today if None)
         """
-        self.amount = self.calculate_amount(string.replace(str(amount), '$', ''))
+        self.amount = self.calculate_amount(str(amount).replace('$', ''))
         self.category = category.title()
         self.description = description
         if date is None:

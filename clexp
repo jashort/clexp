@@ -22,6 +22,19 @@ def add_expense(args):
     """
     try:
         e = Expense(args.amount, args.category, args.description, args.date)
+
+        # Also add a header row if the file doesn't exist
+        header = None
+        if not os.path.isfile(args.file):
+            header = "Date\tCategory\tDescription\tAmount\n"
+
+        with open(args.file, 'a') as f:
+            if header is not None:
+                f.write(header)
+            f.write(str(e))
+            f.write("\n")
+        print("Added:")
+        print(str(e))
     except ValueError:
         print("Error: unable to parse input as expense.")
         print("          Amount: {}".format(args.amount))
@@ -29,19 +42,6 @@ def add_expense(args):
         print("     Description: {}".format(args.description))
         print("            Date: {}".format(args.date))
         exit(1)
-
-    # Also add a header row if the file doesn't exist
-    header = None
-    if not os.path.isfile(args.file):
-        header = "Date\tCategory\tDescription\tAmount\n"
-
-    with open(args.file, 'a') as f:
-        if header is not None:
-            f.write(header)
-        f.write(str(e))
-        f.write("\n")
-    print("Added:")
-    print(str(e))
 
 
 def total_expenses(args):
@@ -134,6 +134,7 @@ def summary(args):
     return True
 
 
+# noinspection PyUnresolvedReferences
 def plot(args):
     """
     Plot totals with MatPlotLib
@@ -231,7 +232,7 @@ def initialize_storage(args):
     path, filename = os.path.split(args.file)
     if not os.path.isdir(path) and path != '':
         try:
-            os.mkdir(path, 0700)
+            os.mkdir(path, 700)
         except OSError:
             print("Error: couldn't create storage directory {0}".format(path))
 
