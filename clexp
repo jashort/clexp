@@ -110,6 +110,20 @@ def list_categories(args):
         print("  {}".format(category))
 
 
+def search(args):
+    """
+    Search for entries containing the search string
+    @param args: Command line arguments
+    @type args: argparse arguments object
+    """
+    expenses = load_data(args.file)
+    items = list(expenses.get_expenses())
+    match = args.search.lower()
+    for item in sorted(items, key=lambda expense: expense.date):
+        if match in item.description.lower():
+            print(item)
+
+
 def summary(args):
     """
     Print a summary of the current month
@@ -274,6 +288,10 @@ def main():
     # Parser for categories command
     a_categories = subparsers.add_parser('categories', help='Show all categories currently used')
     a_categories.set_defaults(func=list_categories)
+    # Parser for search command
+    a_search = subparsers.add_parser('search', help='Search for expenses containing STRING')
+    a_search.add_argument('search', type=str, help="Search string")
+    a_search.set_defaults(func=search)
     # Parser for plot command
     a_plot = subparsers.add_parser('plot', help='Plot totals with MathPlotLib')
     a_plot.set_defaults(func=plot)

@@ -137,7 +137,15 @@ $ clexp list 2014 1 food
 01/25/2014	Food	sandwich	$5.95
 ```
 
+Search
+================
+To find expenses, use the search command. It is case insensitive.
 
+```shell
+$ clexp search sandwich
+01/18/2014	Food	sandwich	$5.95
+01/25/2014	Food	sandwich	$5.95
+```
 
 
 Other Output Commands
